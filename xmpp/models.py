@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.conf import settings
 import datetime
 import uuid
@@ -17,6 +17,8 @@ import urllib
 
 import logging
 lg = logging.getLogger(__name__)
+
+User = get_user_model()
 
 
 class XMPPAccount(models.Model):
