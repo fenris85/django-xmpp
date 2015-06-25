@@ -21,13 +21,19 @@ import logging
 import struct
 import sys
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 
 from xmpp.models import XMPPAccount
 
 __author__ = "fabio"
 
+
+try:
+    from django.conf import settings
+except ImportError:
+    from django.contrib.auth.models import User
+else:
+    User = settings.AUTH_USER_MODEL
 
 class Command(BaseCommand):
     logger = logging.getLogger(__name__)

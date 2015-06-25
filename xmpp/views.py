@@ -5,7 +5,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
 from django.db.models import Q
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+
 
 from .models import XMPPAccount, XMPPAutoJoin
 
@@ -16,7 +18,8 @@ class XhrUserSearchView(View):
     @method_decorator(login_required)
     def get(self, *args, **kwargs):
         query = self.request.GET.get('q', '')
-        users = User.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
+        UserModel = get_user_model()
+        users = UserModel.objects.filter(Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query))
         users_jid = map(lambda user: {
             'id': '%s@%s' % (user.username.lower(), settings.XMPP_DOMAIN),
             'fullname': user.get_full_name() or user.username,
