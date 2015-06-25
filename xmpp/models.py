@@ -18,7 +18,14 @@ import urllib
 import logging
 lg = logging.getLogger(__name__)
 
-User = get_user_model()
+
+
+try:
+    from django.conf import settings
+except ImportError:
+    from django.contrib.auth.models import User
+else:
+    User = settings.AUTH_USER_MODEL
 
 
 class XMPPAccount(models.Model):
